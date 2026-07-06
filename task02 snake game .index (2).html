@@ -424,6 +424,12 @@ const GRID = 20;
 const SPEEDS = { easy: 130, medium: 85, hard: 50 };
 const TIME_LIMIT = 60;
 
+// ── Safe CSS Variable Getter ─────────────────────────────
+function getCSSVar(varName) {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  return value || '#2a2a3d'; // Fallback to default border color
+}
+
 // ── State ──────────────────────────────────────────────────
 let canvas, ctx, W, H, COLS, ROWS;
 let snake, dir, nextDir, food, score, timeLeft, gameMode, difficulty;
@@ -640,7 +646,7 @@ function draw() {
   ctx.clearRect(0, 0, W, H);
 
   // Grid lines (subtle)
-  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
+  ctx.strokeStyle = getCSSVar('--border');
   ctx.lineWidth = 0.5;
   ctx.globalAlpha = 0.4;
   for (let x = 0; x <= COLS; x++) { ctx.beginPath(); ctx.moveTo(x*GRID,0); ctx.lineTo(x*GRID,H); ctx.stroke(); }
@@ -861,7 +867,7 @@ window.addEventListener('load', () => {
   updateHUD();
   // Draw idle grid
   if (ctx) {
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface').trim();
+    ctx.fillStyle = getCSSVar('--surface');
     ctx.fillRect(0,0,W,H);
   }
 });
@@ -870,7 +876,7 @@ window.addEventListener('resize', () => {
   setupCanvas();
   if (!running) {
     if (ctx) {
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--surface').trim();
+      ctx.fillStyle = getCSSVar('--surface');
       ctx.fillRect(0,0,W,H);
     }
   }
